@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+<img src="{{post_id.image.url}}" />
+<h5>{{post_id.title}}</h5>
+<p>{{post_id.content}}</p>
+<a href="{% url 'home' %}" class="btn btn-primary">Back</a>
+<a href="{% url 'update' post_id.id %}" class="btn btn-primary">Update</a>
+<a href="{% url 'delete' post_id.id %}" class="btn btn-primary">Delete</a>
+{% for comment in post %}
+
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <div
+      id="collapseOne"
+      class="accordion-collapse collapse show"
+      data-bs-parent="#accordionExample"
+    >
+      <div class="accordion-body">
+        <p>Author: {{comment.author}}</p>
+        <p>Comment: {{comment.text}}</p>
+        <p>Date: {{comment.created_at}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<form method="post" action="{% url 'comment' post_id.id %}">
+  {% csrf_token %}
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputPassword1"
+      placeholder="comment"
+      name="text"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
